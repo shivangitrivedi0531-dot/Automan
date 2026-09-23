@@ -1,0 +1,714 @@
+{
+  "schema": "public",
+  "table_count": 236,
+  "tables": [
+    {
+      "table_name": "SequelizeMeta"
+    },
+    {
+      "table_name": "_migrations"
+    },
+    {
+      "table_name": "c_ser"
+    },
+    {
+      "table_name": "comp_inst"
+    },
+    {
+      "table_name": "config"
+    },
+    {
+      "table_name": "mst_ac_detail"
+    },
+    {
+      "table_name": "mst_activation"
+    },
+    {
+      "table_name": "mst_actype"
+    },
+    {
+      "table_name": "mst_agent"
+    },
+    {
+      "table_name": "mst_area"
+    },
+    {
+      "table_name": "mst_backup"
+    },
+    {
+      "table_name": "mst_bank"
+    },
+    {
+      "table_name": "mst_bodytype"
+    },
+    {
+      "table_name": "mst_booking"
+    },
+    {
+      "table_name": "mst_branch"
+    },
+    {
+      "table_name": "mst_chq_format"
+    },
+    {
+      "table_name": "mst_city"
+    },
+    {
+      "table_name": "mst_class"
+    },
+    {
+      "table_name": "mst_co_bankdetail"
+    },
+    {
+      "table_name": "mst_company"
+    },
+    {
+      "table_name": "mst_country"
+    },
+    {
+      "table_name": "mst_customer_profile"
+    },
+    {
+      "table_name": "mst_daybook"
+    },
+    {
+      "table_name": "mst_dealer"
+    },
+    {
+      "table_name": "mst_defacc"
+    },
+    {
+      "table_name": "mst_defect"
+    },
+    {
+      "table_name": "mst_defhpafin"
+    },
+    {
+      "table_name": "mst_deflabour"
+    },
+    {
+      "table_name": "mst_dept"
+    },
+    {
+      "table_name": "mst_designation"
+    },
+    {
+      "table_name": "mst_discount"
+    },
+    {
+      "table_name": "mst_district"
+    },
+    {
+      "table_name": "mst_division"
+    },
+    {
+      "table_name": "mst_einvoice"
+    },
+    {
+      "table_name": "mst_emp"
+    },
+    {
+      "table_name": "mst_emp_details"
+    },
+    {
+      "table_name": "mst_enq_source"
+    },
+    {
+      "table_name": "mst_enq_type"
+    },
+    {
+      "table_name": "mst_esc_matrix"
+    },
+    {
+      "table_name": "mst_fame_head"
+    },
+    {
+      "table_name": "mst_fin_payout"
+    },
+    {
+      "table_name": "mst_financer"
+    },
+    {
+      "table_name": "mst_gen_account"
+    },
+    {
+      "table_name": "mst_gparameter"
+    },
+    {
+      "table_name": "mst_group"
+    },
+    {
+      "table_name": "mst_head"
+    },
+    {
+      "table_name": "mst_history"
+    },
+    {
+      "table_name": "mst_histsub"
+    },
+    {
+      "table_name": "mst_hsn"
+    },
+    {
+      "table_name": "mst_ins_hero_up"
+    },
+    {
+      "table_name": "mst_institute"
+    },
+    {
+      "table_name": "mst_insurance"
+    },
+    {
+      "table_name": "mst_iou"
+    },
+    {
+      "table_name": "mst_iposting"
+    },
+    {
+      "table_name": "mst_item"
+    },
+    {
+      "table_name": "mst_item_group"
+    },
+    {
+      "table_name": "mst_item_rate"
+    },
+    {
+      "table_name": "mst_item_sublabour"
+    },
+    {
+      "table_name": "mst_job_complain"
+    },
+    {
+      "table_name": "mst_job_remark"
+    },
+    {
+      "table_name": "mst_job_sertype"
+    },
+    {
+      "table_name": "mst_job_toolkit"
+    },
+    {
+      "table_name": "mst_jobseries"
+    },
+    {
+      "table_name": "mst_labour_rate"
+    },
+    {
+      "table_name": "mst_litem"
+    },
+    {
+      "table_name": "mst_loan"
+    },
+    {
+      "table_name": "mst_location"
+    },
+    {
+      "table_name": "mst_lsubitem"
+    },
+    {
+      "table_name": "mst_measurement"
+    },
+    {
+      "table_name": "mst_menu_item"
+    },
+    {
+      "table_name": "mst_mfg_company"
+    },
+    {
+      "table_name": "mst_mtaxrate"
+    },
+    {
+      "table_name": "mst_notes"
+    },
+    {
+      "table_name": "mst_occupation"
+    },
+    {
+      "table_name": "mst_oldvehicle"
+    },
+    {
+      "table_name": "mst_oth_prd"
+    },
+    {
+      "table_name": "mst_oth_prd_item"
+    },
+    {
+      "table_name": "mst_owner"
+    },
+    {
+      "table_name": "mst_paramater"
+    },
+    {
+      "table_name": "mst_paramater_field"
+    },
+    {
+      "table_name": "mst_pincode"
+    },
+    {
+      "table_name": "mst_prd_colour"
+    },
+    {
+      "table_name": "mst_prd_price"
+    },
+    {
+      "table_name": "mst_prd_price_fin"
+    },
+    {
+      "table_name": "mst_prd_service"
+    },
+    {
+      "table_name": "mst_prdgroup"
+    },
+    {
+      "table_name": "mst_price"
+    },
+    {
+      "table_name": "mst_priceupd"
+    },
+    {
+      "table_name": "mst_product"
+    },
+    {
+      "table_name": "mst_product_coupon"
+    },
+    {
+      "table_name": "mst_pur_type"
+    },
+    {
+      "table_name": "mst_reason"
+    },
+    {
+      "table_name": "mst_region"
+    },
+    {
+      "table_name": "mst_remark"
+    },
+    {
+      "table_name": "mst_sale_type"
+    },
+    {
+      "table_name": "mst_salesman"
+    },
+    {
+      "table_name": "mst_scheme"
+    },
+    {
+      "table_name": "mst_seramt"
+    },
+    {
+      "table_name": "mst_series"
+    },
+    {
+      "table_name": "mst_smstype"
+    },
+    {
+      "table_name": "mst_smsuser"
+    },
+    {
+      "table_name": "mst_state"
+    },
+    {
+      "table_name": "mst_sub_location"
+    },
+    {
+      "table_name": "mst_sub_scheme"
+    },
+    {
+      "table_name": "mst_taluka"
+    },
+    {
+      "table_name": "mst_tax_definition"
+    },
+    {
+      "table_name": "mst_tax_transection"
+    },
+    {
+      "table_name": "mst_taxrate"
+    },
+    {
+      "table_name": "mst_taxrate1"
+    },
+    {
+      "table_name": "mst_team_leader"
+    },
+    {
+      "table_name": "mst_transport"
+    },
+    {
+      "table_name": "mst_user"
+    },
+    {
+      "table_name": "mst_userright"
+    },
+    {
+      "table_name": "mst_veh_pollutant"
+    },
+    {
+      "table_name": "mst_veh_service"
+    },
+    {
+      "table_name": "mst_vendor"
+    },
+    {
+      "table_name": "mst_workshop"
+    },
+    {
+      "table_name": "mst_year"
+    },
+    {
+      "table_name": "rpt_register"
+    },
+    {
+      "table_name": "smsdata"
+    },
+    {
+      "table_name": "sys_otp"
+    },
+    {
+      "table_name": "tblmsg"
+    },
+    {
+      "table_name": "tblmsg1"
+    },
+    {
+      "table_name": "tblmsg2"
+    },
+    {
+      "table_name": "tblstksum"
+    },
+    {
+      "table_name": "tran_challan"
+    },
+    {
+      "table_name": "transection"
+    },
+    {
+      "table_name": "trn_accidental_vehdetails"
+    },
+    {
+      "table_name": "trn_aging"
+    },
+    {
+      "table_name": "trn_amc_followup"
+    },
+    {
+      "table_name": "trn_amc_reg"
+    },
+    {
+      "table_name": "trn_article"
+    },
+    {
+      "table_name": "trn_booklock"
+    },
+    {
+      "table_name": "trn_branch_transfer"
+    },
+    {
+      "table_name": "trn_branch_transferdetail"
+    },
+    {
+      "table_name": "trn_cust_feedback"
+    },
+    {
+      "table_name": "trn_daily_collection"
+    },
+    {
+      "table_name": "trn_disc_detail"
+    },
+    {
+      "table_name": "trn_dorder"
+    },
+    {
+      "table_name": "trn_emi_detail"
+    },
+    {
+      "table_name": "trn_emp_attdetail"
+    },
+    {
+      "table_name": "trn_emp_salary"
+    },
+    {
+      "table_name": "trn_enq_followup"
+    },
+    {
+      "table_name": "trn_enq_quotation"
+    },
+    {
+      "table_name": "trn_enquiry"
+    },
+    {
+      "table_name": "trn_expenses"
+    },
+    {
+      "table_name": "trn_fin"
+    },
+    {
+      "table_name": "trn_findetail"
+    },
+    {
+      "table_name": "trn_finpay_rcpt_detail"
+    },
+    {
+      "table_name": "trn_followup"
+    },
+    {
+      "table_name": "trn_fscsub"
+    },
+    {
+      "table_name": "trn_gstr1_doc_prefix"
+    },
+    {
+      "table_name": "trn_insu_detail"
+    },
+    {
+      "table_name": "trn_inv_ledger"
+    },
+    {
+      "table_name": "trn_inv_stk"
+    },
+    {
+      "table_name": "trn_iocflow"
+    },
+    {
+      "table_name": "trn_item_location"
+    },
+    {
+      "table_name": "trn_item_requ_detail"
+    },
+    {
+      "table_name": "trn_item_requisition"
+    },
+    {
+      "table_name": "trn_job_all_in_one"
+    },
+    {
+      "table_name": "trn_job_booking"
+    },
+    {
+      "table_name": "trn_job_complain"
+    },
+    {
+      "table_name": "trn_job_followup"
+    },
+    {
+      "table_name": "trn_job_followup_reason"
+    },
+    {
+      "table_name": "trn_job_remark"
+    },
+    {
+      "table_name": "trn_job_toolkit"
+    },
+    {
+      "table_name": "trn_job_toolkit_bosch"
+    },
+    {
+      "table_name": "trn_jobcard"
+    },
+    {
+      "table_name": "trn_labour_issue"
+    },
+    {
+      "table_name": "trn_loc_inv_stk"
+    },
+    {
+      "table_name": "trn_loc_transfer"
+    },
+    {
+      "table_name": "trn_loc_transferdetail"
+    },
+    {
+      "table_name": "trn_log_mod_del_detail"
+    },
+    {
+      "table_name": "trn_nonrfc_inv"
+    },
+    {
+      "table_name": "trn_old_veh_pur_sale"
+    },
+    {
+      "table_name": "trn_order"
+    },
+    {
+      "table_name": "trn_orderdetail"
+    },
+    {
+      "table_name": "trn_oth_prd_pur"
+    },
+    {
+      "table_name": "trn_oth_prd_sale"
+    },
+    {
+      "table_name": "trn_oth_sales"
+    },
+    {
+      "table_name": "trn_oth_salesret"
+    },
+    {
+      "table_name": "trn_part_issue"
+    },
+    {
+      "table_name": "trn_part_issue_return"
+    },
+    {
+      "table_name": "trn_phy_stk"
+    },
+    {
+      "table_name": "trn_phy_stkdetail"
+    },
+    {
+      "table_name": "trn_print_detail"
+    },
+    {
+      "table_name": "trn_pur_receipt"
+    },
+    {
+      "table_name": "trn_quo_invpart"
+    },
+    {
+      "table_name": "trn_quo_labour"
+    },
+    {
+      "table_name": "trn_quotation"
+    },
+    {
+      "table_name": "trn_receipt"
+    },
+    {
+      "table_name": "trn_receipt_fin"
+    },
+    {
+      "table_name": "trn_reg_no"
+    },
+    {
+      "table_name": "trn_rto_detail"
+    },
+    {
+      "table_name": "trn_rto_detail_agent"
+    },
+    {
+      "table_name": "trn_rtodata"
+    },
+    {
+      "table_name": "trn_rtodata_excel"
+    },
+    {
+      "table_name": "trn_rtx_detail"
+    },
+    {
+      "table_name": "trn_slip"
+    },
+    {
+      "table_name": "trn_spares_ipurc"
+    },
+    {
+      "table_name": "trn_spares_ipurc_return"
+    },
+    {
+      "table_name": "trn_spd_inventory"
+    },
+    {
+      "table_name": "trn_spd_inventoryret"
+    },
+    {
+      "table_name": "trn_stock"
+    },
+    {
+      "table_name": "trn_sub_scheme"
+    },
+    {
+      "table_name": "trn_sublabour"
+    },
+    {
+      "table_name": "trn_subpart"
+    },
+    {
+      "table_name": "trn_subpart_class"
+    },
+    {
+      "table_name": "trn_subpart_ret"
+    },
+    {
+      "table_name": "trn_subpartphy"
+    },
+    {
+      "table_name": "trn_target"
+    },
+    {
+      "table_name": "trn_trial"
+    },
+    {
+      "table_name": "trn_trial_balance"
+    },
+    {
+      "table_name": "trn_used_veh"
+    },
+    {
+      "table_name": "trn_user_led"
+    },
+    {
+      "table_name": "trn_veh_entry"
+    },
+    {
+      "table_name": "trn_veh_entrydetail"
+    },
+    {
+      "table_name": "trn_veh_inv_stk"
+    },
+    {
+      "table_name": "trn_veh_inventory"
+    },
+    {
+      "table_name": "trn_veh_location_transfer"
+    },
+    {
+      "table_name": "trn_veh_location_transferdetail"
+    },
+    {
+      "table_name": "trn_veh_pur"
+    },
+    {
+      "table_name": "trn_veh_pur_return"
+    },
+    {
+      "table_name": "trn_veh_sales"
+    },
+    {
+      "table_name": "trn_veh_sales_ret_chl"
+    },
+    {
+      "table_name": "trn_veh_sales_ret_inv"
+    },
+    {
+      "table_name": "trn_veh_salesbt"
+    },
+    {
+      "table_name": "trn_veh_salesbt_ret_chl"
+    },
+    {
+      "table_name": "trn_veh_salesdis"
+    },
+    {
+      "table_name": "trn_veh_salesfin"
+    },
+    {
+      "table_name": "trn_veh_saleslet"
+    },
+    {
+      "table_name": "trn_veh_salesrto"
+    },
+    {
+      "table_name": "trn_veh_salestx_ret_chl"
+    },
+    {
+      "table_name": "trn_warclaim"
+    },
+    {
+      "table_name": "trn_warranty_detail"
+    },
+    {
+      "table_name": "trn_wo_subpart"
+    }
+  ]
+}
