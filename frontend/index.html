@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Sales AI Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Approved Brand Palette */
+            --brand-primary: #025796;       /* Primary brand / main buttons */
+            --brand-hover: #044F8C;         /* Hover / active / darker sections */
+            --brand-secondary: #026AA9;     /* Links / secondary interactive */
+            --brand-supporting: #2E73A8;    /* Supporting UI elements */
+            --brand-accent-light: #82A7C3;  /* Light accents */
+            --brand-soft-bg: #C3DCED;       /* Soft backgrounds / subtle highlights */
+
+            /* Neutral ERP Light Surfaces */
+            --bg-page: #f1f5f9;
+            --bg-surface: #ffffff;
+            --bg-chat-area: #f8fafc;
+            --border-color: #cbd5e1;
+
+            /* Typography & Contrast */
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --text-on-primary: #ffffff;
+
+            /* Message Bubbles */
+            --user-msg-bg: #025796;
+            --user-msg-text: #ffffff;
+            --ai-msg-bg: #ffffff;
+            --ai-msg-border: #cbd5e1;
+            --ai-msg-text: #0f172a;
+
+            /* Shadows & Radii */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(2, 87, 150, 0.08);
+            --shadow-lg: 0 10px 25px -5px rgba(2, 87, 150, 0.12);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* App Main Window */
+        .app-container {
+            width: 100%;
+            max-width: 1100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-surface);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                height: 94vh;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+            }
+        }
+
+        /* Header */
+        .header {
+            padding: 16px 24px;
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background-color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-on-primary);
+        }
+
+        .header-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--brand-primary);
+            background-color: var(--brand-soft-bg);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--brand-primary);
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background-color: var(--bg-chat-area);
+            scroll-behavior: smooth;
+        }
+
+        /* Welcome Container */
+        .welcome-container {
+            margin: auto;
+            max-width: 560px;
+            text-align: center;
+            padding: 32px 20px;
+        }
+
+        .welcome-badge {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background-color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0 auto 12px;
+        }
+
+        .welcome-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .welcome-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+
+        .suggestions-label {
+            display: block;
+            font-size: 0.775rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--brand-supporting);
+            margin-top: 20px;
+        }
+
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        @media (min-width: 520px) {
+            .suggestions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .suggestion-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .suggestion-card:hover {
+            border-color: var(--brand-secondary);
+            background-color: var(--brand-soft-bg);
+            color: var(--brand-primary);
+            transform: translateY(-2px);
+        }
+
+        .suggestion-card svg {
+            pointer-events: none;
+            color: var(--brand-supporting);
+            transition: transform 0.2s ease, color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        /* Message Bubbles */
+        .message-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .message-row.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+            max-width: 80%;
+        }
+
+        .message-row.ai {
+            align-self: flex-start;
+            max-width: 96%;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .message-row.user .avatar {
+            background-color: var(--brand-supporting);
+            color: white;
+        }
+
+        .message-row.ai .avatar {
+            background-color: var(--brand-primary);
+            color: white;
+        }
+
+        .message-bubble {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            font-size: 0.935rem;
+            line-height: 1.6;
+            word-break: break-word;
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        .message-row.user .message-bubble {
+            background-color: var(--user-msg-bg);
+            color: var(--user-msg-text);
+            border-bottom-right-radius: 4px;
+            width: auto;
+        }
+
+        .message-row.ai .message-bubble {
+            background-color: var(--ai-msg-bg);
+            color: var(--ai-msg-text);
+            border: 1px solid var(--ai-msg-border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-row.ai.error .message-bubble {
+            background-color: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        /* Natural Language Summary Paragraph */
+        .ai-summary-text {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ERP Data Viewer Styles */
+        .erp-result-card {
+            margin-top: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: #ffffff;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .erp-result-header {
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .erp-result-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--brand-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .erp-badge-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .erp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.775rem;
+            font-weight: 600;
+            background-color: var(--brand-soft-bg);
+            color: var(--brand-primary);
+            border: 1px solid rgba(2, 87, 150, 0.15);
+        }
+
+        .erp-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            padding: 16px;
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .erp-metric-item {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .erp-metric-label {
+            font-size: 0.725rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .erp-metric-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+
+        .erp-metric-value.highlight {
+            color: var(--brand-primary);
+        }
+
+        /* ERP Table */
+        .erp-table-container {
+            width: 100%;
+        }
+
+        .erp-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .erp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.835rem;
+            text-align: left;
+        }
+
+        .erp-table th {
+            background-color: #f1f5f9;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .erp-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            vertical-align: middle;
+        }
+
+        .erp-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .erp-table tbody tr.expanded-row {
+            background-color: #f0f7fc;
+        }
+
+        .inv-code {
+            font-weight: 700;
+            color: var(--brand-primary);
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .erp-details-btn {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--brand-supporting);
+            color: var(--brand-primary);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .erp-details-btn:hover {
+            background-color: var(--brand-primary);
+            color: white;
+        }
+
+        .erp-details-btn.active {
+            background-color: var(--brand-hover);
+            color: white;
+            border-color: var(--brand-hover);
+        }
+
+        /* Detail Panel in Expanded Row */
+        .detail-row td {
+            padding: 0 !important;
+            background-color: #f8fafc;
+        }
+
+        .detail-panel {
+            padding: 14px 16px;
+            border-bottom: 2px solid var(--border-color);
+            background-color: #f8fafc;
+        }
+
+        .detail-panel-title {
+            font-size: 0.775rem;
+            font-weight: 700;
+            color: var(--brand-supporting);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .sub-table th {
+            background-color: #e2e8f0;
+            font-size: 0.775rem;
+        }
+
+        .sub-table td {
+            font-size: 0.8rem;
+            background-color: #ffffff;
+        }
+
+        .reg-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            background-color: #e2e8f0;
+            color: #0f172a;
+            border-radius: 4px;
+            font-weight: 600;
+            font-family: monospace;
+            font-size: 0.775rem;
+        }
+
+        /* Pagination Bar */
+        .erp-pagination {
+            padding: 12px 16px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .erp-pagination-info {
+            font-weight: 500;
+        }
+
+        .erp-pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .erp-page-btn {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.775rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .erp-page-btn:hover:not(:disabled) {
+            background-color: var(--brand-soft-bg);
+            color: var(--brand-primary);
+            border-color: var(--brand-secondary);
+        }
+
+        .erp-page-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .erp-page-select {
+            padding: 3px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.775rem;
+            background-color: #ffffff;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .erp-no-records {
+            padding: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Thinking Indicator */
+        .thinking-bubble {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 20px;
+            width: auto !important;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--brand-supporting);
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        /* Input Area */
+        .input-container {
+            padding: 16px 24px 20px;
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-box {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            background-color: var(--bg-chat-area);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 8px 14px;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(2, 87, 150, 0.15);
+            background-color: var(--bg-surface);
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 0.935rem;
+            line-height: 1.5;
+            resize: none;
+            max-height: 120px;
+            min-height: 26px;
+            padding: 6px 0;
+        }
+
+        textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background-color: var(--brand-primary);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-btn svg {
+            pointer-events: none;
+        }
+
+        .send-btn:hover {
+            background-color: var(--brand-hover);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .input-footer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-brand">
+                <div class="header-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="header-title-container">
+                    <h1 class="header-title">ERP Sales AI Agent</h1>
+                    <span class="header-subtitle">Ask questions about your ERP sales data</span>
+                </div>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Connected</span>
+            </div>
+        </header>
+
+        <!-- Chat Main Area -->
+        <main class="chat-area" id="chatArea">
+            <!-- Welcome Screen -->
+            <div class="welcome-container" id="welcomeContainer">
+                <div class="welcome-badge">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </div>
+                <h2 class="welcome-title">Welcome to ERP Sales AI</h2>
+                <p class="welcome-desc">Ask questions about your sales data. Get instant deterministic answers directly from your PostgreSQL ERP database.</p>
+
+                <span class="suggestions-label">Try asking</span>
+                <div class="suggestions-grid">
+                    <div class="suggestion-card" onclick="sendExample('Show me Jupiter sales')">
+                        <span>Show me Jupiter sales</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                    <div class="suggestion-card" onclick="sendExample('Show EV sales')">
+                        <span>Show EV sales</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                    <div class="suggestion-card" onclick="sendExample('Show sales for customer 9500175')">
+                        <span>Show sales for customer 9500175</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                    <div class="suggestion-card" onclick="sendExample('Show sales from 20250712 to 20250718')">
+                        <span>Show sales from 20250712 to 20250718</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Input Bar -->
+        <footer class="input-container">
+            <form class="input-box" id="chatForm" onsubmit="event.preventDefault(); handleSend();">
+                <textarea id="userInput" placeholder="Ask about your sales..." rows="1"></textarea>
+                <button type="button" class="send-btn" id="sendBtn" title="Send Message">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </form>
+            <div class="input-footer">
+                ERP Sales AI Agent • Connected to PostgreSQL
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8001/query";
+
+        const chatArea = document.getElementById('chatArea');
+        const welcomeContainer = document.getElementById('welcomeContainer');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatForm = document.getElementById('chatForm');
+
+        // Explicit single click listener on send button
+        if (sendBtn) {
+            sendBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleSend();
+            });
+        }
+
+        // Auto-resize textarea as user types
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Handle Enter key (Send) vs Shift+Enter (Newline)
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+
+        function sendExample(text) {
+            userInput.value = text;
+            handleSend();
+        }
+
+        async function handleSend() {
+            const queryText = userInput.value.trim();
+            if (!queryText) return;
+
+            // Hide welcome screen on first query
+            if (welcomeContainer) {
+                welcomeContainer.style.display = 'none';
+            }
+
+            // Append User Message
+            appendUserMessage(queryText);
+
+            // Clear Input
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            disableInput(true);
+
+            // Show Loading Indicator
+            const thinkingRow = appendThinkingIndicator();
+            scrollToBottom();
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question: queryText })
+                });
+
+                const data = await response.json();
+                thinkingRow.remove();
+
+                if (response.ok) {
+                    if (data.answer) {
+                        appendAiMessage(data, data.success === false);
+                    } else if (data.error) {
+                        appendAiMessage({ answer: "Error: " + data.error }, true);
+                    } else {
+                        appendAiMessage({ answer: "Received response from agent.", result: data.result }, false);
+                    }
+                } else {
+                    const errorDetail = data.detail || data.error || "Request failed with HTTP status " + response.status;
+                    appendAiMessage({ answer: "Error: " + errorDetail }, true);
+                }
+            } catch (err) {
+                thinkingRow.remove();
+                appendAiMessage({ answer: "Unable to connect to ERP Sales AI server at " + API_URL + ". Please ensure the FastAPI backend is running." }, true);
+            } finally {
+                disableInput(false);
+                userInput.focus();
+                scrollToBottom();
+            }
+        }
+
+        function appendUserMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'message-row user';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerText = 'You';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.innerText = text;
+
+            row.appendChild(avatar);
+            row.appendChild(bubble);
+            chatArea.appendChild(row);
+        }
+
+        function appendAiMessage(dataPayload, isError = false) {
+            const row = document.createElement('div');
+            row.className = 'message-row ai' + (isError ? ' error' : '');
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+
+            // Natural Language Summary Answer
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'ai-summary-text';
+
+            let answerText = "";
+            if (typeof dataPayload === 'string') {
+                answerText = dataPayload;
+            } else if (dataPayload && dataPayload.answer) {
+                answerText = dataPayload.answer;
+            } else {
+                answerText = "Response received.";
+            }
+
+            summaryDiv.innerText = answerText;
+            bubble.appendChild(summaryDiv);
+
+            // Detailed ERP Data Viewer
+            if (dataPayload && dataPayload.result && typeof dataPayload.result === 'object') {
+                const erpViewer = renderErpDataViewer(dataPayload.result);
+                bubble.appendChild(erpViewer);
+            }
+
+            row.appendChild(avatar);
+            row.appendChild(bubble);
+            chatArea.appendChild(row);
+        }
+
+        function appendThinkingIndicator() {
+            const row = document.createElement('div');
+            row.className = 'message-row ai';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble thinking-bubble';
+            bubble.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
+
+            row.appendChild(avatar);
+            row.appendChild(bubble);
+            chatArea.appendChild(row);
+            return row;
+        }
+
+        function disableInput(disabled) {
+            userInput.disabled = disabled;
+            sendBtn.disabled = disabled;
+        }
+
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        /* Helpers & Formatting */
+        function formatCurrency(val) {
+            if (val === null || val === undefined || isNaN(val)) return '₹0.00';
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(val);
+        }
+
+        function formatDate(str) {
+            if (!str) return '-';
+            const s = String(str).trim();
+            if (s.length === 8 && /^\d{8}$/.test(s)) {
+                return `${s.substring(0,4)}-${s.substring(4,6)}-${s.substring(6,8)}`;
+            }
+            return s;
+        }
+
+        function createBadge(text) {
+            const badge = document.createElement('span');
+            badge.className = 'erp-badge';
+            badge.innerText = text;
+            return badge;
+        }
+
+        function createMetricCard(label, val, extraClass = '') {
+            const item = document.createElement('div');
+            item.className = 'erp-metric-item';
+
+            const lbl = document.createElement('span');
+            lbl.className = 'erp-metric-label';
+            lbl.innerText = label;
+
+            const v = document.createElement('span');
+            v.className = 'erp-metric-value ' + extraClass;
+            v.innerText = val;
+
+            item.appendChild(lbl);
+            item.appendChild(v);
+            return item;
+        }
+
+        /* ERP Result Data Component */
+        function renderErpDataViewer(res) {
+            const card = document.createElement('div');
+            card.className = 'erp-result-card';
+
+            if (!res || typeof res !== 'object') {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'erp-no-records';
+                emptyDiv.innerText = 'No detailed result data available.';
+                card.appendChild(emptyDiv);
+                return card;
+            }
+
+            // Header bar
+            const header = document.createElement('div');
+            header.className = 'erp-result-header';
+
+            const title = document.createElement('div');
+            title.className = 'erp-result-title';
+            title.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> DETAILED SALES INFORMATION`;
+            header.appendChild(title);
+
+            // Context Badges
+            const badgeContainer = document.createElement('div');
+            badgeContainer.className = 'erp-badge-container';
+
+            if (res.product_name || res.product_code) {
+                badgeContainer.appendChild(createBadge(`Product: ${res.product_name || ''} (${res.product_code || ''})`.trim()));
+            }
+            if (res.ev_label || res.ev) {
+                badgeContainer.appendChild(createBadge(`Series: ${res.ev_label || 'EV'}`));
+            }
+            if (res.customer_name || res.customer_code) {
+                badgeContainer.appendChild(createBadge(`Customer: ${res.customer_name || ''} (${res.customer_code || ''})`.trim()));
+            }
+            if (res.start_date && res.end_date) {
+                badgeContainer.appendChild(createBadge(`Period: ${formatDate(res.start_date)} to ${formatDate(res.end_date)}`));
+            }
+            if (res.co_year) {
+                badgeContainer.appendChild(createBadge(`Financial Year: ${res.co_year}`));
+            }
+            if (res.account_name || res.ac_code) {
+                badgeContainer.appendChild(createBadge(`Account: ${res.account_name || ''} (${res.ac_code || ''})`.trim()));
+            }
+
+            if (badgeContainer.children.length > 0) {
+                header.appendChild(badgeContainer);
+            }
+            card.appendChild(header);
+
+            // Metric Cards Grid
+            const metricsGrid = document.createElement('div');
+            metricsGrid.className = 'erp-metrics-grid';
+
+            const totalAmount = res.total_amount ?? res.sum_amount ?? 0;
+            const invCount = res.number_of_invoices ?? (Array.isArray(res.invoices) ? res.invoices.length : 0);
+            const accRows = res.number_of_accounting_rows ?? 0;
+
+            metricsGrid.appendChild(createMetricCard('Total Amount', formatCurrency(totalAmount), 'highlight'));
+            metricsGrid.appendChild(createMetricCard('Total Invoices', invCount.toLocaleString()));
+            metricsGrid.appendChild(createMetricCard('Accounting Rows', accRows.toLocaleString()));
+
+            if (res.min_doc_date && res.max_doc_date) {
+                metricsGrid.appendChild(createMetricCard('Date Range', `${formatDate(res.min_doc_date)} to ${formatDate(res.max_doc_date)}`));
+            }
+
+            card.appendChild(metricsGrid);
+
+            // Invoices handling
+            const invoices = Array.isArray(res.invoices) ? res.invoices : (Array.isArray(res) ? res : null);
+
+            if (invoices) {
+                if (invoices.length === 0) {
+                    const noData = document.createElement('div');
+                    noData.className = 'erp-no-records';
+                    noData.innerText = 'No invoice records found matching your query criteria.';
+                    card.appendChild(noData);
+                } else {
+                    const tableSection = createPaginatedInvoicesTable(invoices);
+                    card.appendChild(tableSection);
+                }
+            } else {
+                const fallbackView = createGenericDictView(res);
+                card.appendChild(fallbackView);
+            }
+
+            return card;
+        }
+
+        /* Interactive Paginated Invoices Table */
+        function createPaginatedInvoicesTable(invoices) {
+            const container = document.createElement('div');
+            container.className = 'erp-table-container';
+
+            let currentPage = 1;
+            let pageSize = 10;
+            const expandedInvoices = new Set();
+
+            const tableWrapper = document.createElement('div');
+            tableWrapper.className = 'erp-table-wrapper';
+
+            const paginationBar = document.createElement('div');
+            paginationBar.className = 'erp-pagination';
+
+            function render() {
+                tableWrapper.innerHTML = '';
+                paginationBar.innerHTML = '';
+
+                const totalRecords = invoices.length;
+                const effPageSize = (pageSize === 'all') ? totalRecords : parseInt(pageSize, 10);
+                const totalPages = Math.max(1, Math.ceil(totalRecords / effPageSize));
+
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                const startIndex = (currentPage - 1) * effPageSize;
+                const endIndex = (pageSize === 'all') ? totalRecords : Math.min(startIndex + effPageSize, totalRecords);
+                const pageItems = invoices.slice(startIndex, endIndex);
+
+                // Build Table
+                const table = document.createElement('table');
+                table.className = 'erp-table';
+
+                const thead = document.createElement('thead');
+                thead.innerHTML = `
+                    <tr>
+                        <th style="width: 50px;">#</th>
+                        <th>Invoice No</th>
+                        <th>Doc Date</th>
+                        <th>Total Amount</th>
+                        <th>Acc. Rows</th>
+                        <th>Vehicle / Item Details</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
+
+                pageItems.forEach((inv, idx) => {
+                    const globalIndex = startIndex + idx + 1;
+                    const invNo = inv.invoice_no || `INV-${globalIndex}`;
+                    const docDate = formatDate(inv.doc_date);
+                    const totalAmt = formatCurrency(inv.invoice_total_amount);
+                    const accRows = inv.accounting_rows ?? inv.accounting_row_count ?? 0;
+                    const vehList = Array.isArray(inv.vehicles) ? inv.vehicles : [];
+                    const isExpanded = expandedInvoices.has(invNo);
+
+                    const tr = document.createElement('tr');
+                    if (isExpanded) tr.className = 'expanded-row';
+
+                    tr.innerHTML = `
+                        <td>${globalIndex}</td>
+                        <td><span class="inv-code">${invNo}</span></td>
+                        <td>${docDate}</td>
+                        <td><strong>${totalAmt}</strong></td>
+                        <td>${accRows}</td>
+                        <td>
+                            ${vehList.length > 0 ? `
+                                <button type="button" class="erp-details-btn ${isExpanded ? 'active' : ''}" data-inv="${invNo}">
+                                    ${isExpanded ? 'Hide Details' : `View Details (${vehList.length})`}
+                                </button>
+                            ` : '<span style="color: var(--text-muted); font-size: 0.8rem;">None</span>'}
+                        </td>
+                    `;
+
+                    tbody.appendChild(tr);
+
+                    // Expanded Detail Row
+                    if (isExpanded && vehList.length > 0) {
+                        const detailTr = document.createElement('tr');
+                        detailTr.className = 'detail-row';
+                        const detailTd = document.createElement('td');
+                        detailTd.colSpan = 6;
+
+                        const detailPanel = document.createElement('div');
+                        detailPanel.className = 'detail-panel';
+
+                        let vehTableHtml = `
+                            <div class="detail-panel-title">Vehicle / Item Records (${vehList.length})</div>
+                            <div class="erp-table-wrapper">
+                                <table class="erp-table sub-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Chassis No</th>
+                                            <th>Engine No</th>
+                                            <th>Reg No</th>
+                                            <th>Product</th>
+                                            <th>Customer</th>
+                                            <th>Sale Date</th>
+                                            <th>Hist Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        `;
+
+                        vehList.forEach(v => {
+                            const prodInfo = (v.product_name ? `${v.product_name} (${v.product_code || ''})` : v.product_code) || '-';
+                            const custInfo = (v.customer_name ? `${v.customer_name} (${v.cust_code || ''})` : v.cust_code) || '-';
+                            vehTableHtml += `
+                                <tr>
+                                    <td><code>${v.chassis_no || '-'}</code></td>
+                                    <td><code>${v.engine_no || '-'}</code></td>
+                                    <td><span class="reg-badge">${v.reg_no || '-'}</span></td>
+                                    <td>${prodInfo}</td>
+                                    <td>${custInfo}</td>
+                                    <td>${formatDate(v.sale_date)}</td>
+                                    <td><code>${v.hist_code || '-'}</code></td>
+                                </tr>
+                            `;
+                        });
+
+                        vehTableHtml += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+
+                        detailPanel.innerHTML = vehTableHtml;
+                        detailTd.appendChild(detailPanel);
+                        detailTr.appendChild(detailTd);
+                        tbody.appendChild(detailTr);
+                    }
+                });
+
+                table.appendChild(tbody);
+                tableWrapper.appendChild(table);
+
+                // Add Toggle Event Listeners
+                tableWrapper.querySelectorAll('.erp-details-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.currentTarget.getAttribute('data-inv');
+                        if (expandedInvoices.has(id)) {
+                            expandedInvoices.delete(id);
+                        } else {
+                            expandedInvoices.add(id);
+                        }
+                        render();
+                    });
+                });
+
+                // Pagination Controls Setup
+                const startRec = totalRecords === 0 ? 0 : startIndex + 1;
+                const endRec = endIndex;
+
+                paginationBar.innerHTML = `
+                    <div class="erp-pagination-info">
+                        Showing <strong>${startRec}–${endRec}</strong> of <strong>${totalRecords}</strong> invoices
+                    </div>
+                    <div class="erp-pagination-controls">
+                        <label style="margin-right: 4px; font-size: 0.775rem;">Per page:</label>
+                        <select class="erp-page-select" id="pageSizeSelect">
+                            <option value="10" ${pageSize === 10 ? 'selected' : ''}>10</option>
+                            <option value="25" ${pageSize === 25 ? 'selected' : ''}>25</option>
+                            <option value="50" ${pageSize === 50 ? 'selected' : ''}>50</option>
+                            <option value="100" ${pageSize === 100 ? 'selected' : ''}>100</option>
+                            <option value="all" ${pageSize === 'all' ? 'selected' : ''}>All (${totalRecords})</option>
+                        </select>
+                        <button type="button" class="erp-page-btn" id="btnFirst" ${currentPage === 1 ? 'disabled' : ''}>First</button>
+                        <button type="button" class="erp-page-btn" id="btnPrev" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>
+                        <span style="margin: 0 4px; font-weight: 600;">Page ${currentPage} of ${totalPages}</span>
+                        <button type="button" class="erp-page-btn" id="btnNext" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+                        <button type="button" class="erp-page-btn" id="btnLast" ${currentPage === totalPages ? 'disabled' : ''}>Last</button>
+                    </div>
+                `;
+
+                // Event Listeners for Pagination
+                const selectEl = paginationBar.querySelector('#pageSizeSelect');
+                selectEl.addEventListener('change', (e) => {
+                    const val = e.target.value;
+                    pageSize = val === 'all' ? 'all' : parseInt(val, 10);
+                    currentPage = 1;
+                    render();
+                });
+
+                const btnFirst = paginationBar.querySelector('#btnFirst');
+                const btnPrev = paginationBar.querySelector('#btnPrev');
+                const btnNext = paginationBar.querySelector('#btnNext');
+                const btnLast = paginationBar.querySelector('#btnLast');
+
+                if (btnFirst) btnFirst.addEventListener('click', () => { currentPage = 1; render(); });
+                if (btnPrev) btnPrev.addEventListener('click', () => { currentPage--; render(); });
+                if (btnNext) btnNext.addEventListener('click', () => { currentPage++; render(); });
+                if (btnLast) btnLast.addEventListener('click', () => { currentPage = totalPages; render(); });
+            }
+
+            render();
+
+            container.appendChild(tableWrapper);
+            container.appendChild(paginationBar);
+            return container;
+        }
+
+        /* Generic Fallback Dict View */
+        function createGenericDictView(res) {
+            const container = document.createElement('div');
+            container.style.padding = '16px';
+
+            const primKeys = Object.keys(res).filter(k => typeof res[k] !== 'object' || res[k] === null);
+            if (primKeys.length > 0) {
+                const grid = document.createElement('div');
+                grid.className = 'erp-metrics-grid';
+                primKeys.forEach(k => {
+                    const val = res[k];
+                    grid.appendChild(createMetricCard(k.replace(/_/g, ' '), val !== null ? String(val) : '-'));
+                });
+                container.appendChild(grid);
+            }
+
+            return container;
+        }
+    </script>
+</body>
+</html>
